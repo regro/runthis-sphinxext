@@ -9,37 +9,34 @@ parameters.
 
 Examples:
 
-.. hidden-code-block:: python
+.. runthis:: python
     :starthidden: False
 
     a = 10
     b = a + 5
 
-.. hidden-code-block:: python
+.. runthis:: python
     :label: --- SHOW/HIDE ---
 
     x = 10
     y = x + 5
 
 """
+import json
 
 from docutils import nodes
 from docutils.parsers.rst import directives
 from sphinx.directives.code import CodeBlock
 
-HCB_COUNTER = 0
+RT_COUNTER = 0
 
-js_showhide = """\
+JS_RUNTHIS = """\
+<div id="{divid}"></div>
 <script type="text/javascript">
-    function showhide(element){
-        if (!document.getElementById)
-            return
-
-        if (element.style.display == "block")
-            element.style.display = "none"
-        else
-            element.style.display = "block"
-    };
+  var app = Elm.Main.init({{
+    node: document.getElementById("{divid}"),
+    flags: {flags}
+  }});
 </script>
 """
 
@@ -63,20 +60,20 @@ class RunThisCodeBlock(CodeBlock):
 
     def run(self):
         # Body of the method is more or less copied from CodeBlock
-        code = u'\n'.join(self.content)
-        hcb = hidden_code_block(code, code)
-        hcb['language'] = self.arguments[0]
-        hcb['linenos'] = 'linenos' in self.options
-        hcb['starthidden'] = self.options.get('starthidden', True)
-        hcb['label'] = self.options.get('label', '+ show/hide code')
-        hcb.line = self.lineno
-        return [hcb]
+        code = '\n'.join(self.content)
+        rtcb = runthis_code_block(code, code)
+        rtcb['language'] = self.arguments[0]
+        rtcb['linenos'] = 'linenos' in self.options
+        rtcb['starthidden'] = self.options.get('starthidden', True)
+        rtcb['label'] = self.options.get('label', '+ show/hide code')
+        rtcb.line = self.lineno
+        return [rtcb]
 
 
 def visit_runthis_html(self, node):
     """Visit runthis code block"""
-    global HCB_COUNTER
-    HCB_COUNTER += 1
+    global RT_COUNTER
+    RT_COUNTER += 1
 
     # We want to use the original highlighter so that we don't
     # have to reimplement it.  However it raises a SkipNode
@@ -91,17 +88,19 @@ def visit_runthis_html(self, node):
     # block that was just made.
     code_block = self.body[-1]
 
-    fill_header = {'divname': 'hiddencodeblock{0}'.format(HCB_COUNTER),
-                   'startdisplay': 'none' if node['starthidden'] else 'block',
-                   'label': node.get('label'),
-                   }
-
-    divheader = ("""<a href="javascript:showhide(document.getElementById('{divname}'))">"""
-                 """{label}</a><br />"""
-                 '''<div id="{divname}" style="display: {startdisplay}">'''
-                 ).format(**fill_header)
-
-    code_block = js_showhide + divheader + code_block + "</div>"
+    flags = {
+        "placeholder": code_block,
+        "serverUrl": server_url,
+        "presetup": "",
+        "setup": '\n'.join(self.content) + "\n",
+    }
+    ctx = {
+        'divid': 'runthis{0}'.format(RT_COUNTER),
+        'startdisplay': 'none' if node['starthidden'] else 'block',
+        'label': node.get('label'),
+        'flags': json.dumps(flags),
+    }
+    code_block = JS_RUNTHIS.format(**ctx)
 
     # reassign and exit
     self.body[-1] = code_block
