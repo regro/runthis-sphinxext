@@ -98,7 +98,7 @@ def visit_runthis_html(self, node):
         'divid': 'runthis{0}'.format(RT_COUNTER),
         'startdisplay': 'none' if node['starthidden'] else 'block',
         'label': node.get('label'),
-        'flags': json.dumps(flags),
+        'flags': json.dumps(flags, sort_keys=True, indent=None),
     }
     code_block = JS_RUNTHIS.format(**ctx)
 
