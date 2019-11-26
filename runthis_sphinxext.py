@@ -23,6 +23,7 @@ Examples:
 
 """
 import json
+from functools import partial, wraps
 
 from docutils import nodes
 from docutils.parsers.rst import directives
@@ -70,7 +71,7 @@ class RunThisCodeBlock(CodeBlock):
         return [rtcb]
 
 
-def visit_runthis_html(self, node):
+def visit_runthis_html(self, node, app=None):
     """Visit runthis code block"""
     global RT_COUNTER
     RT_COUNTER += 1
@@ -88,11 +89,12 @@ def visit_runthis_html(self, node):
     # block that was just made.
     code_block = self.body[-1]
 
+    config = self.config
     flags = {
         "placeholder": code_block,
-        "serverUrl": server_url,
+        "serverUrl": config.runthis_server,
         "presetup": "",
-        "setup": '\n'.join(self.content) + "\n",
+        "setup": node.rawsource + "\n",
     }
     ctx = {
         'divid': 'runthis{0}'.format(RT_COUNTER),
@@ -114,4 +116,14 @@ def depart_runthis_html(self, node):
 
 def setup(app):
     app.add_directive('runthis', RunThisCodeBlock)
-    app.add_node(runthis_code_block, html=(visit_runthis_html, depart_runthis_html))
+    app.add_node(
+        runthis_code_block,
+        html=(
+            #wraps(visit_runthis_html)(partial(visit_runthis_html, app=app)),
+            visit_runthis_html,
+            depart_runthis_html
+        )
+    )
+    # add global app config options
+    app.add_config_value('runthis_server', str, 'html')
+

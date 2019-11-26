@@ -17,3 +17,7 @@ def test_sphinxext():
 
     # check the output
     assert "runthis" in s
+
+
+    # cleanup
+    subprocess.run(["make", "clean"], check=True, cwd=docs)
