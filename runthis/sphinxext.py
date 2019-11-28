@@ -115,6 +115,7 @@ def depart_runthis_html(self, node):
 
 
 def setup(app):
+    app.add_js_file('runthis-client.min.js')
     app.add_directive('runthis', RunThisCodeBlock)
     app.add_node(
         runthis_code_block,

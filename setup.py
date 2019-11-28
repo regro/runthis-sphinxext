@@ -23,13 +23,15 @@ def main():
         platforms='Cross Platform',
         classifiers=['Programming Language :: Python :: 3'],
         py_modules=['runthis_sphinxext'],
-        data_files=[],
+        packages=['runthis'],
+        package_dir={'runthis': 'runthis'},
+        package_data={'runthis': ['*.js']},
         install_requires=[],
         python_requires=">=3.6",
         zip_safe=False,
         entry_points={
             'sphinx.builders': [
-                'runthis = runthis_sphinxext',
+                'runthis = runthis.sphinxext',
             ],
         }
     )
