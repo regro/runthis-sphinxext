@@ -22,7 +22,9 @@ Examples:
     y = x + 5
 
 """
+import os
 import json
+import shutil
 from functools import partial, wraps
 
 from docutils import nodes
@@ -115,7 +117,11 @@ def depart_runthis_html(self, node):
 
 
 def setup(app):
+    # copy over client
     app.add_js_file('runthis-client.min.js')
+    src_dir = os.path.dirname(__file__)
+    client_js =
+    # add directive
     app.add_directive('runthis', RunThisCodeBlock)
     app.add_node(
         runthis_code_block,

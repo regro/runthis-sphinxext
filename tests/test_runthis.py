@@ -10,6 +10,7 @@ RT1 = r"""
     node: document.getElementById("runthis1"),
     flags: {"placeholder": "<div class=
 """.strip()
+RT2 = '<script type="text/javascript" src="_static/runthis-client.min.js"></script>'
 
 
 def test_sphinxext():
@@ -24,9 +25,13 @@ def test_sphinxext():
         s = f.read()
 
     # check the output
-    substrings = ["runthis", RT1]
+    substrings = ["runthis", RT1, RT2]
     for sub in substrings:
         assert sub in s
 
+    # check that the file was copied
+    client_js = os.path.join(docs, "_build", "html", "_static", "runthis-client.min.js")
+    assert os.path.isfile(client_js), "runthis-client.min.js missing"
+
     # cleanup
-    subprocess.run(["make", "clean"], check=True, cwd=docs)
+    #subprocess.run(["make", "clean"], check=True, cwd=docs)
