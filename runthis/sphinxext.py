@@ -120,7 +120,10 @@ def setup(app):
     # copy over client
     app.add_js_file('runthis-client.min.js')
     src_dir = os.path.dirname(__file__)
-    client_js =
+    client_js = os.path.join(src_dir, 'runthis-client.min.js')
+    static_dir = os.path.join(app.outdir, '_static')
+    os.makedirs(static_dir, exist_ok=True)
+    shutil.copy2(client_js, static_dir)
     # add directive
     app.add_directive('runthis', RunThisCodeBlock)
     app.add_node(

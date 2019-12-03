@@ -34,4 +34,4 @@ def test_sphinxext():
     assert os.path.isfile(client_js), "runthis-client.min.js missing"
 
     # cleanup
-    #subprocess.run(["make", "clean"], check=True, cwd=docs)
+    subprocess.run(["make", "clean"], check=True, cwd=docs)
