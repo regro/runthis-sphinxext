@@ -26,7 +26,7 @@ requirements:
 
 test:
   imports:
-    - runthis_sphinxext
+    - runthis.sphinxext
   commands:
     - pytest
   requires:
