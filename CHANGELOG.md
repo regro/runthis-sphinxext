@@ -1,5 +1,5 @@
-=========================
-runthis-server Change Log
-=========================
+============================
+runthis-sphinxext Change Log
+============================
 
 <!-- current developments -->

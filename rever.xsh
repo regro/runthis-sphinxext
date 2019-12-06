@@ -1,4 +1,4 @@
-$PROJECT = $GITHUB_REPO = 'runthis-server'
+$PROJECT = $GITHUB_REPO = 'runthis-sphinxext'
 $GITHUB_ORG = 'regro'
 
 $ACTIVITIES = [
@@ -14,7 +14,7 @@ $ACTIVITIES = [
 
 $AUTHORS_FILENAME = 'AUTHORS.md'
 $VERSION_BUMP_PATTERNS = [
-    ('runthis/server/__init__.py', r'__version__\s*=.*', "__version__ = '$VERSION'"),
+    ('runthis/sphinxext.py', r'__version__\s*=.*', '__version__ = "$VERSION"'),
     ('setup.py', r'version\s*=.*,', "version='$VERSION',")
 ]
 $CHANGELOG_FILENAME = 'CHANGELOG.md'
