@@ -31,8 +31,8 @@ from docutils import nodes
 from docutils.parsers.rst import directives
 from sphinx.directives.code import CodeBlock
 
+__version__ = "0.0.0"
 RT_COUNTER = 0
-
 JS_RUNTHIS = """\
 <div id="{divid}"></div>
 <script type="text/javascript">
