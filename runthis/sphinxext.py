@@ -1,22 +1,18 @@
-"""Sphinx extension which adds a directive for a
-highlighted code-block that may be executed by clicking the
-run button above the code block/
+"""Sphinx extension which adds a directive for RunThis
+code-block that may be executed by clicking the "RunThis"
+button above the code block.
 
 The directive, like the standard code-block directive, takes
-a language argument and an optional linenos parameter.  The
-hidden-code-block adds starthidden and label as optional
-parameters.
+a language argument and an optional linenos parameter.
 
 Examples:
 
 .. runthis:: python
-    :starthidden: False
 
     a = 10
     b = a + 5
 
 .. runthis:: python
-    :label: --- SHOW/HIDE ---
 
     x = 10
     y = x + 5
@@ -100,8 +96,6 @@ def visit_runthis_html(self, node, app=None):
     }
     ctx = {
         'divid': 'runthis{0}'.format(RT_COUNTER),
-        'startdisplay': 'none' if node['starthidden'] else 'block',
-        'label': node.get('label'),
         'flags': json.dumps(flags, sort_keys=True, indent=None),
     }
     code_block = JS_RUNTHIS.format(**ctx)
