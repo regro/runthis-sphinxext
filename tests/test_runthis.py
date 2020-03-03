@@ -10,7 +10,7 @@ RT1 = r"""
     node: document.getElementById("runthis1"),
     flags: {"placeholder": "<div class=
 """.strip()
-RT2 = '<script type="text/javascript" src="_static/runthis-client.min.js"></script>'
+RT2 = '<script src="_static/runthis-client.min.js"></script>'
 
 
 def test_sphinxext():
