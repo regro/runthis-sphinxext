@@ -1,6 +1,7 @@
 # runthis ignores
 tests/docs/_build/
 runthis-client.min.js
+sha256*.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
